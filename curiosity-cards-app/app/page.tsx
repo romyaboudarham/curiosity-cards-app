@@ -22,6 +22,9 @@ export default function Home() {
                 <span className="inline-block w-20 text-right text-primary">{tickerWords[tickerIndex]}</span>
                 <span className="ml-6">it.</span>
             </h1>
+            <h2>Generate flashcards on any topic instantly</h2>
+            <input className="border-2 border-gray-300 rounded-md p-2" type="text" placeholder={'Try "types of dinosaurs"'} />
+            <button>Generate Flashcards</button>
         </div>
     );
 }

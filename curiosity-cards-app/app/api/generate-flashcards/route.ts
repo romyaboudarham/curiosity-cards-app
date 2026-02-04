@@ -6,12 +6,23 @@ export async function POST(req: Request) {
 
     const prompt = `
     Return ONLY the flashcards.
-    Do NOT include an introduction, explanation, or numbering.
+    Do NOT include any introduction, explanation, headings, numbering, or questions.
+    
+    These are STUDY FLASHCARDS.
     Format EXACTLY as:
-    word:definition;word:definition;...
-
-    Make ${numCards} word:definition pairs of ${topic}.
+    front:back;front:back;...
+    
+    Rules:
+    - Each flashcard must test recall.
+    - The FRONT must be a short label or term, NOT a full sentence or question.
+    - The BACK must be the concise answer.
+    - Choose the most natural recall direction for the topic.
+    - If one side is symbolic and the other is verbal, the symbolic side MUST be on the BACK.
+    - Keep front side minimal (ideally 1-5 words).
+    
+    Create ${numCards} flashcards about ${topic}.
     `;
+    
 
     const aiResponse = await fetch("https://api.openai.com/v1/chat/completions", {
       method: "POST",

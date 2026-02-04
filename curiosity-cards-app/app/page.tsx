@@ -23,12 +23,12 @@ export default function Home() {
 
     setFeedbackMsg(`Generating ${numCards} cards about "${topic}"`);
 
-    let flashcardsUnparsed: string;
+    let flashcardsRaw: string;
 
     if (isTesting) {
       // Use test data - simulate a small delay for realism
       await new Promise(resolve => setTimeout(resolve, 500));
-      flashcardsUnparsed = testFlashcards;
+      flashcardsRaw = testFlashcards;
     } else {
       const response = await fetch("/api/generate-flashcards", {
         method: "POST",
@@ -40,11 +40,11 @@ export default function Home() {
       });
 
       const data = await response.json();
-      flashcardsUnparsed = data.flashcards;
+      flashcardsRaw = data.flashcards;
     }
 
-    console.log(flashcardsUnparsed);
-    localStorage.setItem('flashcards', flashcardsUnparsed);
+    console.log(flashcardsRaw);
+    localStorage.setItem('flashcardsRaw', flashcardsRaw);
     setFeedbackMsg("Flashcards generated!");
     router.push('/study');
   }

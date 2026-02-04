@@ -1,13 +1,18 @@
 'use client';
 
 import { useState, useEffect } from 'react';
+import { useRouter } from 'next/navigation';
 import Input from '@/components/Input';
 import PrimaryButton from '@/components/PrimaryButton';
 import Dropdown from '@/components/Dropdown'
 
 const tickerWords = ['study', 'learn', 'make'];
 
+const testFlashcards = "Velociraptor:A small, fast dinosaur with sharp claws that lived during the Cretaceous period;Triceratops:A herbivorous dinosaur with three horns and a large bony frill;Tyrannosaurus Rex:One of the largest carnivorous dinosaurs with tiny arms and powerful jaws;Stegosaurus:A dinosaur known for its distinctive row of plates along its back;Pterodactyl:A flying reptile that lived alongside dinosaurs during the Mesozoic era;";
+const isTesting: boolean = true;
+
 export default function Home() {
+  const router = useRouter();
   const [tickerIndex, setTickerIndex] = useState(0);
   const [numCards, setNumCards] = useState(10);
   const [topic, setTopic] = useState('');
@@ -18,18 +23,30 @@ export default function Home() {
 
     setFeedbackMsg(`Generating ${numCards} cards about "${topic}"`);
 
-    const response = await fetch("/api/generate-flashcards", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({
-        numCards,
-        topic,
-      }),
-    });
+    let flashcardsUnparsed: string;
 
-    const data = await response.json();
-    console.log(data.flashcards);
+    if (isTesting) {
+      // Use test data - simulate a small delay for realism
+      await new Promise(resolve => setTimeout(resolve, 500));
+      flashcardsUnparsed = testFlashcards;
+    } else {
+      const response = await fetch("/api/generate-flashcards", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          numCards,
+          topic,
+        }),
+      });
+
+      const data = await response.json();
+      flashcardsUnparsed = data.flashcards;
+    }
+
+    console.log(flashcardsUnparsed);
+    localStorage.setItem('flashcards', flashcardsUnparsed);
     setFeedbackMsg("Flashcards generated!");
+    router.push('/study');
   }
 
   useEffect(() => {

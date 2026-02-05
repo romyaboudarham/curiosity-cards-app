@@ -20,7 +20,7 @@ export default function Dropdown({value, onChange}: DropdownProps) {
     <select
       value={value}
       onChange={handleChange}
-      className="bg-surface-background-50 border border-border rounded-md p-2 text-text-body cursor-pointer focus:outline-none hover:border-border-hover"
+      className="bg-surface-background-50 border border-border rounded-md p-2 text-text-body cursor-pointer focus:outline-none hover:border-border-focus"
     >
       {OPTIONS.map((num) => (
         <option 

@@ -10,7 +10,7 @@ interface InputProps {
 export default function Input({ className, value, onChange, placeholder }: InputProps) {
     return(
         <input
-            className={`bg-surface-background-50 border-1 border-border rounded-md p-2 focus:outline-none focus:border-border-hover ${className ?? ''}`}
+            className={`bg-surface-background-50 border-1 border-border rounded-md p-2 focus:outline-none focus:border-border-focus ${className ?? ''}`}
             type="text"
             value={value}
             onChange={(e) => onChange(e.target.value)}

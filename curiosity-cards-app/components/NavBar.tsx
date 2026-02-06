@@ -24,13 +24,25 @@ export default function NavBar() {
           </Link>
 
           {/* Nav Links */}
-          <div className="flex items-center space-x-6 lg:space-x-8">
-            <Link href="/" className="flex items-center space-x-2 group cursor-pointer">
-              <RoundButton icon="/add-icon.png" className="w-8 h-7 sm:w-9 sm:h-8"/>
-              <span className="text-lg sm:text-xl md:text-2xl text-text-heading-logo">
-                CuriosityCards
-              </span>
-            </Link>
+          <div className="flex items-center space-x-2 lg:space-x-3 pr-9">
+            <RoundButton
+              href="/profile"
+              icon={<img src="/profile-icon.png" alt="Profile" className="w-6 h-6" />}
+              label="Profile"
+              className="w-9 h-9"
+            />
+            <RoundButton
+              href="/decks"
+              icon={<img src="/decks-icon.png" alt="Decks" className="w-6 h-6" />}
+              label="Decks"
+              className="w-9 h-9"
+            />
+            <RoundButton
+              href="/"
+              icon={<img src="/add-icon.png" alt="Add" className="w-6 h-6" />}
+              label="Add"
+              className="w-9 h-9"
+            />
           </div>
         </div>
       </div>

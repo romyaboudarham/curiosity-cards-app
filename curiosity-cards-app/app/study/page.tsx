@@ -102,7 +102,7 @@ export default function Study() {
                     </svg>
                   } 
                   onClick={handlePrevious}
-                  className="hidden md:flex"
+                  className="hidden md:flex w-8 h-8"
                 />
                 <p className="text-text-body-200 min-w-[60px]">{currentIndex + 1}/{cards.length}</p>
                 <div className="relative hidden md:block">
@@ -113,6 +113,7 @@ export default function Study() {
                       </svg>
                     } 
                     onClick={handleNext}
+                    className="w-8 h-8"
                   />
                   {showNextInstruction && (
                     <div 

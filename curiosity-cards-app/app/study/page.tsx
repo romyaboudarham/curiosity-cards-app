@@ -6,6 +6,7 @@ import PrimaryButton from '@/components/PrimaryButton';
 import SecondaryButton from '@/components/SecondaryButton';
 import FlashCard from '@/components/FlashCard';
 import NavBar from '@/components/NavBar';
+import RoundButton from '@/components/RoundButton'
 
 type InstructionStep = 'flip' | 'next' | 'done';
 
@@ -94,24 +95,28 @@ export default function Study() {
             {/* Card count with navigation buttons */}
             {cards.length > 0 && currentIndex < cards.length && (
               <div className='mt-4 flex items-center justify-center gap-4'>
-                <button
+                <RoundButton 
+                  icon={
+                    <svg className="w-6 h-6" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" d="M15 19l-7-7 7-7" />
+                    </svg>
+                  } 
                   onClick={handlePrevious}
-                  disabled={currentIndex === 0}
-                  className="hidden md:block p-2 rounded-lg border border-border bg-surface-background-50 text-text-body-100 hover:bg-surface-background-100 transition-colors disabled:opacity-30 disabled:cursor-not-allowed"
-                >
-                  ←
-                </button>
+                  className="hidden md:flex"
+                />
                 <p className="text-text-body-200 min-w-[60px]">{currentIndex + 1}/{cards.length}</p>
                 <div className="relative hidden md:block">
-                  <button
+                  <RoundButton 
+                    icon={
+                      <svg className="w-6 h-6" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24">
+                        <path strokeLinecap="round" strokeLinejoin="round" d="M9 5l7 7-7 7" />
+                      </svg>
+                    } 
                     onClick={handleNext}
-                    className="p-2 rounded-lg border border-border bg-surface-background-50 text-text-body-100 hover:bg-surface-background-100 transition-colors"
-                  >
-                    →
-                  </button>
+                  />
                   {showNextInstruction && (
                     <div 
-                      className="absolute inset-0 rounded-lg ring-2 ring-green-500 pointer-events-none"
+                      className="absolute inset-0 rounded-full ring-2 ring-green-500 pointer-events-none"
                       style={{ animation: 'fade-pulse 2s ease-in-out infinite' }}
                     />
                   )}

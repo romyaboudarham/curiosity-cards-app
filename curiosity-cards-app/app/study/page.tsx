@@ -5,6 +5,7 @@ import { Card } from '@/app/types';
 import PrimaryButton from '@/components/PrimaryButton';
 import SecondaryButton from '@/components/SecondaryButton';
 import FlashCard from '@/components/FlashCard';
+import NavBar from '@/components/NavBar';
 
 type InstructionStep = 'flip' | 'next' | 'done';
 
@@ -65,8 +66,9 @@ export default function Study() {
     const showNextInstruction = instructionStep === 'next';
 
     return (
-        <div className="flex flex-col min-h-screen items-center px-4">
-          <main className="w-full max-w-md text-center">
+        <div className="flex flex-col min-h-screen px-4 pt-16">
+          <NavBar />
+          <main className="w-full max-w-lg mx-auto text-center mt-8">
             <div className="flex mt-8">
               <PrimaryButton text="Study" className="flex-1 rounded-r-none"/>
               <SecondaryButton text="Edit" className="flex-1 rounded-l-none"/>

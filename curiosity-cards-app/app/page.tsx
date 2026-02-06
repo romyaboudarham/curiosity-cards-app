@@ -5,6 +5,7 @@ import { useRouter } from 'next/navigation';
 import Input from '@/components/Input';
 import PrimaryButton from '@/components/PrimaryButton';
 import Dropdown from '@/components/Dropdown'
+import NavBar from '@/components/NavBar';
 
 const tickerWords = ['study', 'learn', 'make'];
 
@@ -58,40 +59,49 @@ export default function Home() {
   }, []);
 
   return (
-    <div className="flex min-h-screen flex-col items-center px-4">
-      <header className="mt-16 text-center">
-        <h1 className="text-4xl font-bold text-text-heading">
-          <span className="block mb-1">Curious?</span>
-          <span className="inline-block w-20 text-right text-text-body-brand">
-            {tickerWords[tickerIndex]}
-          </span>
-          <span className="ml-6">it.</span>
-        </h1>
-        <p className="m-5 text-text-body">
-          Generate flashcards on any topic instantly
-        </p>
-      </header>
+    <div className="flex flex-col min-h-screen px-4 pt-16">
+      <NavBar />
+      <div className="flex flex-1 items-start justify-center">
+        <div className="text-center w-full max-w-lg pt-12 md:pt-24">
+          <header>
+            <h1 className="text-5xl font-bold text-text-heading">
+              <span className="block mb-1">Curious?</span>
+              <span className="inline-block w-20 text-right text-text-body-brand">
+                {tickerWords[tickerIndex]}
+              </span>
+              <span className="ml-13">it.</span>
+            </h1>
 
-      <main className="mt-8 w-full max-w-md">
-        <div className="flex gap-2 mb-4">
-          <Dropdown value={numCards} onChange={setNumCards}/>
-          <Input 
-            value={topic} 
-            onChange={setTopic} 
-            placeholder="Try 'types of dinosaurs'" 
-            className="flex-1"
-          />
+            <p className="m-5 text-text-body">
+              Generate flashcards on any topic instantly
+            </p>
+          </header>
+
+          <main className="mt-16 w-full max-w-lg mx-auto">
+            <div className="flex gap-2 mb-4">
+              <Dropdown value={numCards} onChange={setNumCards} />
+              <Input
+                value={topic}
+                onChange={setTopic}
+                placeholder="Try 'types of dinosaurs'"
+                className="flex-1"
+              />
+            </div>
+
+            <PrimaryButton
+              text="Generate Flashcards"
+              onClick={handleGenerateFlashcards}
+              className="w-full"
+            />
+          </main>
+
+          {feedbackMsg && (
+            <p className="mt-6 text-text-body-300 text-sm">
+              {feedbackMsg}
+            </p>
+          )}
         </div>
-        <PrimaryButton 
-          text="Generate Flashcards" 
-          onClick={handleGenerateFlashcards}
-          className="w-full"
-        />
-      </main>
-
-      {feedbackMsg && (
-        <p className="mt-6 text-text-body-300 text-sm">{feedbackMsg}</p>
-      )}
+      </div>
     </div>
   );
 }

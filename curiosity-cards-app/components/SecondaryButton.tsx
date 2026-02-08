@@ -10,7 +10,7 @@ export default function SecondaryButton({text, className, onClick}: SecondaryBut
     return(
         <button 
             onClick={onClick}
-            className={`bg-surface-button-secondary hover:bg-surface-button-secondary-hover rounded-md p-2 text-text-button-secondary border-1 border-border hover:border-border-focus cursor-pointer ${className ?? ''}`}>
+            className={`uppercase bg-surface-button-secondary hover:bg-surface-button-secondary-hover rounded-md p-2 text-text-button-secondary border-1 border-border hover:border-border-focus cursor-pointer ${className ?? ''}`}>
             {text}
         </button>
     );

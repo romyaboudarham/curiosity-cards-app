@@ -64,15 +64,15 @@ export default function Home() {
       <div className="flex flex-1 items-start justify-center">
         <div className="text-center w-full max-w-lg pt-12 md:pt-24">
           <header>
-            <h1 className="text-5xl font-bold text-text-heading">
+            <h1 className="text-6xl font-bold text-text-heading">
               <span className="block mb-1">Curious?</span>
               <span className="inline-block w-20 text-right text-text-body-brand">
                 {tickerWords[tickerIndex]}
               </span>
-              <span className="ml-13">it.</span>
+              <span className="ml-16"> it.</span>
             </h1>
 
-            <p className="m-5 text-text-body">
+            <p className="m-5 text-lg text-text-body">
               Generate flashcards on any topic instantly
             </p>
           </header>
@@ -96,7 +96,7 @@ export default function Home() {
           </main>
 
           {feedbackMsg && (
-            <p className="mt-6 text-text-body-300 text-sm">
+            <p className="mt-6 text-text-body-300 text-md">
               {feedbackMsg}
             </p>
           )}

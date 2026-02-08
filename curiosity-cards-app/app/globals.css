@@ -66,6 +66,15 @@
   /* Border colors */
   --color-border: #b4b5aa;
   --color-border-focus: #1e1e20;
+
+  /* Typography */
+  --font-family-sans: var(--font-inria-sans), ui-sans-serif, system-ui, sans-serif;
+}
+
+@layer base {
+  body {
+    font-family: var(--font-family-sans);
+  }
 }
 
 /* Fade in/out animation for instructions */

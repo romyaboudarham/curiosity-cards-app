@@ -104,7 +104,7 @@ export default function Study() {
                   onClick={handlePrevious}
                   className="hidden md:flex w-8 h-8"
                 />
-                <p className="text-text-body-200 min-w-[60px]">{currentIndex + 1}/{cards.length}</p>
+                <p className="text-text-body-200 min-w-[60px] text-lg">{currentIndex + 1}/{cards.length}</p>
                 <div className="relative hidden md:block">
                   <RoundButton 
                     icon={

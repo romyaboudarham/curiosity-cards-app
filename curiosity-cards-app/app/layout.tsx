@@ -2,8 +2,9 @@ import "./globals.css";
 import { Inria_Sans } from 'next/font/google'
 
 const inriaSans = Inria_Sans({
-  weight: '400',
+  weight: ['300', '400', '700'],
   subsets: ['latin'],
+  variable: '--font-inria-sans',
 })
 
 export const metadata = {
@@ -18,7 +19,7 @@ export default function RootLayout({
   children: React.ReactNode
 }) {
   return (
-    <html lang="en">
+    <html lang="en" className={inriaSans.variable}>
       <body className="bg-surface-background text-text-body" suppressHydrationWarning>
         <main>{children}</main>
       </body>

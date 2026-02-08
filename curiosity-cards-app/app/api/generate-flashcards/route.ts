@@ -5,30 +5,25 @@ export async function POST(req: Request) {
     const { numCards, topic } = await req.json();
 
     const prompt = `
-    For flashcard requests, use the following rules:
+    Return ONLY flashcards.
 
-- Return ONLY the flashcards.
-- Do NOT include any introduction, explanation, headings, numbering, or extra text.
-- Each flashcard must test recall.
-- The FRONT must be a short label or term (1–5 words), not a question or full sentence.
-- The BACK must be the concise answer or definition.
-- Use a consistent recall direction for all cards.
+    Format EXACTLY as:
+    front:back;front:back;front:back
 
-Format EXACTLY as:
-front:back;front:back;front:back
+    Rules:
+    - Single line only; no spaces or line breaks.
+    - No intro, explanations, headings, or numbering.
+    - Each card must test recall.
+    - FRONT = short term or label (1–5 words).
+    - BACK = concise answer.
+    - Use one consistent recall direction.
 
-Formatting rules:
-- Use a SINGLE line only.
-- Do NOT include spaces or line breaks anywhere in the output.
+    Topic-specific rules:
+    - Language topics: use English-alphabet transliteration only (no native script); target term on FRONT, English meaning on BACK.
+    - Quote/title topics: FRONT is the quote or title; BACK is the source.
 
-If the topic is a language:
-- Do NOT use the native script.
-- Use English-alphabet transliteration ONLY.
-- Put the target-language term on the FRONT and the English meaning on the BACK.
-
-Create ${numCards} flashcards of common ${topic} words.
-
-If the output does not exactly match the required format, regenerate it.`;
+    Create ${numCards} flashcards about ${topic}.
+    Regenerate if the format is not followed exactly.`;
     
 
     const aiResponse = await fetch("https://api.openai.com/v1/chat/completions", {

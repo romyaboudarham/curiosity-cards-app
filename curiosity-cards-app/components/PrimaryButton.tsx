@@ -10,7 +10,7 @@ export default function PrimaryButton({text, className, onClick}: PrimaryButtonP
     return(
         <button 
             onClick={onClick}
-            className={`bg-surface-button-primary hover:bg-surface-button-primary-hover rounded-md p-2 text-text-button-primary border-1 border-border hover:border-border-focus cursor-pointer ${className ?? ''}`}>
+            className={`uppercase bg-surface-button-primary hover:bg-surface-button-primary-hover rounded-md p-2 text-text-button-primary border-1 border-border hover:border-border-focus cursor-pointer ${className ?? ''}`}>
             {text}
         </button>
     );

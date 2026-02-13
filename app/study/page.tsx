@@ -52,11 +52,12 @@ export default function Study() {
             .split(';')
             .filter(c => c.trim())
             .map(c => {
-                const [front, ...rest] = c.split('|');
+                const delimiter = c.includes('|') ? '|' : ':';
+                const [front, ...rest] = c.split(delimiter);
                 return {
                   id: crypto.randomUUID(),
                   front: front.trim(),
-                  back: rest.join('|').trim()
+                  back: rest.join(delimiter).trim()
                 }
             })
             .filter(c => c.front && c.back);

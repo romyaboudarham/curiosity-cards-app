@@ -4,13 +4,14 @@ import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import Input from '@/components/Input';
 import PrimaryButton from '@/components/PrimaryButton';
-import Dropdown from '@/components/Dropdown'
+import Dropdown from '@/components/Dropdown';
 import NavBar from '@/components/NavBar';
 
 const tickerWords = ['study', 'learn', 'make'];
 
-const testFlashcards = "Velociraptor|A small, fast dinosaur with sharp claws that lived during the Cretaceous period;Triceratops|A herbivorous dinosaur with three horns and a large bony frill;Tyrannosaurus Rex|One of the largest carnivorous dinosaurs with tiny arms and powerful jaws;Stegosaurus|A dinosaur known for its distinctive row of plates along its back;Pterodactyl|A flying reptile that lived alongside dinosaurs during the Mesozoic era;";
-const isTesting: boolean = false;
+const testFlashcards =
+  'Velociraptor|A small, fast dinosaur with sharp claws that lived during the Cretaceous period;Triceratops|A herbivorous dinosaur with three horns and a large bony frill;Tyrannosaurus Rex|One of the largest carnivorous dinosaurs with tiny arms and powerful jaws;Stegosaurus|A dinosaur known for its distinctive row of plates along its back;Pterodactyl|A flying reptile that lived alongside dinosaurs during the Mesozoic era;';
+const isTesting: boolean = true;
 
 export default function Home() {
   const router = useRouter();
@@ -19,7 +20,7 @@ export default function Home() {
   const [topic, setTopic] = useState('');
   const [feedbackMsg, setFeedbackMsg] = useState('');
 
-  const handleGenerateFlashcards = async() => {
+  const handleGenerateFlashcards = async () => {
     if (!topic) return;
 
     setFeedbackMsg(`Generating ${numCards} cards about "${topic}"`);
@@ -28,12 +29,12 @@ export default function Home() {
 
     if (isTesting) {
       // Use test data - simulate a small delay for realism
-      await new Promise(resolve => setTimeout(resolve, 500));
+      await new Promise((resolve) => setTimeout(resolve, 500));
       flashcardsRaw = testFlashcards;
     } else {
-      const response = await fetch("/api/generate-flashcards", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
+      const response = await fetch('/api/generate-flashcards', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
           numCards,
           topic,
@@ -46,9 +47,9 @@ export default function Home() {
 
     console.log(flashcardsRaw);
     localStorage.setItem('flashcardsRaw', flashcardsRaw);
-    setFeedbackMsg("Flashcards generated!");
+    setFeedbackMsg('Flashcards generated!');
     router.push('/study');
-  }
+  };
 
   useEffect(() => {
     const interval = setInterval(() => {
@@ -96,9 +97,7 @@ export default function Home() {
           </main>
 
           {feedbackMsg && (
-            <p className="mt-6 text-text-body-300 text-md">
-              {feedbackMsg}
-            </p>
+            <p className="mt-6 text-text-body-300 text-md">{feedbackMsg}</p>
           )}
         </div>
       </div>

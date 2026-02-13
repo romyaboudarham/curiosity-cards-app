@@ -3,10 +3,10 @@
 import { useState, useEffect, useRef } from 'react';
 import { Card } from '@/app/types';
 
-const SWIPE_THRESHOLD = 40; // Distance to trigger swipe
-const THROW_THRESHOLD = 100; // Distance to throw card off screen
-const TAP_THRESHOLD = 15; // Max movement for tap
-const TAP_TIME_THRESHOLD = 400; // Max time for tap (ms)
+const SWIPE_THRESHOLD = 40;
+const THROW_THRESHOLD = 100;
+const TAP_THRESHOLD = 15;
+const TAP_TIME_THRESHOLD = 400;
 
 interface FlashCardProps {
   card: Card;
@@ -26,7 +26,6 @@ export default function FlashCard({
   showSwipeInstruction = false,
 }: FlashCardProps) {
   const [isFlipped, setIsFlipped] = useState(false);
-  const [opacity, setOpacity] = useState(0);
   const [dragOffset, setDragOffset] = useState(0);
   const [isDragging, setIsDragging] = useState(false);
   const [isAnimating, setIsAnimating] = useState(false);
@@ -51,12 +50,6 @@ export default function FlashCard({
     handleFlip();
   };
 
-  // Fade in on mount
-  useEffect(() => {
-    requestAnimationFrame(() => setOpacity(1));
-  }, []);
-
-  // Keyboard controls
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
       if (e.key === ' ') {
@@ -75,7 +68,6 @@ export default function FlashCard({
     return () => window.removeEventListener('keydown', handleKeyDown);
   }, [onNext, onPrevious]);
 
-  // Mobile touch handlers with visual feedback
   const handleTouchStart = (e: React.TouchEvent) => {
     if (isAnimating) return;
 
@@ -94,9 +86,8 @@ export default function FlashCard({
     const deltaX = currentTouchX.current - touchStartX.current;
     const deltaY = e.touches[0].clientY - touchStartY.current;
 
-    // Only track horizontal swipes (prevent vertical scroll interference)
     if (Math.abs(deltaX) > Math.abs(deltaY) && Math.abs(deltaX) > 5) {
-      e.preventDefault(); // Prevent scroll when swiping horizontally
+      e.preventDefault();
       setDragOffset(deltaX);
     }
   };
@@ -113,7 +104,6 @@ export default function FlashCard({
     isDraggingRef.current = false;
     setIsDragging(false);
 
-    // Tap detection: small movement, short time
     if (
       absDeltaX < TAP_THRESHOLD &&
       absDeltaY < TAP_THRESHOLD &&
@@ -125,7 +115,6 @@ export default function FlashCard({
       return;
     }
 
-    // Swipe detection: any horizontal swipe goes to next card
     if (absDeltaX > absDeltaY && absDeltaX > SWIPE_THRESHOLD) {
       setIsAnimating(true);
       const throwDirection = deltaX > 0 ? 1 : -1;
@@ -142,28 +131,24 @@ export default function FlashCard({
       return;
     }
 
-    // Not enough movement, spring back
     setDragOffset(0);
   };
 
   const faceStyles =
     'absolute inset-0 bg-surface-background-50 rounded-xl shadow-lg border border-border p-6 flex flex-col items-center justify-center text-center [backface-visibility:hidden]';
-
-  // Calculate rotation based on drag for a natural feel
-  const dragRotation = dragOffset * 0.05; // Slight rotation during drag
+  const pulseStyle = { animation: 'fade-pulse 2s ease-in-out infinite' };
+  const dragRotation = dragOffset * 0.05;
 
   return (
     <div
-      className="cursor-pointer [perspective:1000px] aspect-[3/2] transition-opacity duration-[250ms] ease-out touch-none select-none"
-      style={{ opacity }}
+      className="cursor-pointer perspective-[1000px] aspect-1/1 md:aspect-3/2 animate-fade-in touch-none select-none"
       onClick={handleClick}
       onTouchStart={handleTouchStart}
       onTouchMove={handleTouchMove}
       onTouchEnd={handleTouchEnd}
     >
-      {/* Inner Div to handle flip animation and drag */}
       <div
-        className="relative w-full h-full [transform-style:preserve-3d]"
+        className="relative w-full h-full transform-3d"
         style={{
           transform: `translateX(${dragOffset}px) rotateY(${isFlipped ? 180 : 0}deg) rotateZ(${dragRotation}deg)`,
           transition: isDragging
@@ -175,19 +160,18 @@ export default function FlashCard({
         <div className={faceStyles}>
           <h1 className="text-4xl font-bold text-text-heading">{card.front}</h1>
           {showFlipInstruction && (
-            <p
-              className="absolute bottom-24 text-green-500 font-medium"
-              style={{ animation: 'fade-pulse 2s ease-in-out infinite' }}
-            >
-              click to flip
-            </p>
-          )}
-          {/* Pulsing ring overlay */}
-          {showFlipInstruction && (
-            <div
-              className="absolute inset-0 rounded-xl ring-2 ring-green-500 ring-offset-2 pointer-events-none"
-              style={{ animation: 'fade-pulse 2s ease-in-out infinite' }}
-            />
+            <>
+              <p
+                className="absolute bottom-24 text-green-500 font-medium"
+                style={pulseStyle}
+              >
+                click to flip
+              </p>
+              <div
+                className="absolute inset-0 rounded-xl ring-2 ring-green-500 ring-offset-2 pointer-events-none"
+                style={pulseStyle}
+              />
+            </>
           )}
         </div>
         {/* Card Back */}
@@ -198,19 +182,18 @@ export default function FlashCard({
             {card.back}
           </h1>
           {showSwipeInstruction && (
-            <p
-              className="mt-4 text-green-500 font-medium md:hidden"
-              style={{ animation: 'fade-pulse 2s ease-in-out infinite' }}
-            >
-              swipe for next
-            </p>
-          )}
-          {/* Pulsing ring overlay - mobile only */}
-          {showSwipeInstruction && (
-            <div
-              className="absolute inset-0 rounded-xl ring-2 ring-green-500 ring-offset-2 pointer-events-none md:hidden"
-              style={{ animation: 'fade-pulse 2s ease-in-out infinite' }}
-            />
+            <>
+              <p
+                className="mt-4 text-green-500 font-medium md:hidden"
+                style={pulseStyle}
+              >
+                swipe for next
+              </p>
+              <div
+                className="absolute inset-0 rounded-xl ring-2 ring-green-500 ring-offset-2 pointer-events-none md:hidden"
+                style={pulseStyle}
+              />
+            </>
           )}
         </div>
       </div>

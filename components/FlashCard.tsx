@@ -3,10 +3,10 @@
 import { useState, useEffect, useRef } from 'react';
 import { Card } from '@/app/types';
 
-const SWIPE_THRESHOLD = 80; // Distance to trigger swipe
-const THROW_THRESHOLD = 150; // Distance to throw card off screen
-const TAP_THRESHOLD = 10; // Max movement for tap
-const TAP_TIME_THRESHOLD = 300; // Max time for tap (ms)
+const SWIPE_THRESHOLD = 40; // Distance to trigger swipe
+const THROW_THRESHOLD = 100; // Distance to throw card off screen
+const TAP_THRESHOLD = 15; // Max movement for tap
+const TAP_TIME_THRESHOLD = 400; // Max time for tap (ms)
 
 interface FlashCardProps {
     card: Card,
@@ -28,6 +28,7 @@ export default function FlashCard({ card, onNext, onPrevious, onFlip, showFlipIn
     const touchStartY = useRef(0);
     const touchStartTime = useRef(0);
     const currentTouchX = useRef(0);
+    const isDraggingRef = useRef(false);
 
     const handleFlip = () => {
         setIsFlipped(prev => !prev);
@@ -66,11 +67,12 @@ export default function FlashCard({ card, onNext, onPrevious, onFlip, showFlipIn
         touchStartY.current = e.touches[0].clientY;
         currentTouchX.current = e.touches[0].clientX;
         touchStartTime.current = Date.now();
+        isDraggingRef.current = true;
         setIsDragging(true);
     };
 
     const handleTouchMove = (e: React.TouchEvent) => {
-        if (!isDragging || isAnimating) return;
+        if (!isDraggingRef.current || isAnimating) return;
 
         currentTouchX.current = e.touches[0].clientX;
         const deltaX = currentTouchX.current - touchStartX.current;
@@ -84,7 +86,7 @@ export default function FlashCard({ card, onNext, onPrevious, onFlip, showFlipIn
     };
 
     const handleTouchEnd = (e: React.TouchEvent) => {
-        if (!isDragging || isAnimating) return;
+        if (!isDraggingRef.current || isAnimating) return;
 
         const deltaX = currentTouchX.current - touchStartX.current;
         const deltaY = e.changedTouches[0].clientY - touchStartY.current;
@@ -92,6 +94,7 @@ export default function FlashCard({ card, onNext, onPrevious, onFlip, showFlipIn
         const absDeltaX = Math.abs(deltaX);
         const absDeltaY = Math.abs(deltaY);
 
+        isDraggingRef.current = false;
         setIsDragging(false);
 
         // Tap detection: small movement, short time, and mostly vertical movement is ok

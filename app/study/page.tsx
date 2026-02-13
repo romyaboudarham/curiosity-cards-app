@@ -52,13 +52,14 @@ export default function Study() {
             .split(';')
             .filter(c => c.trim())
             .map(c => {
-                const [front, back] = c.split(':');
+                const [front, ...rest] = c.split('|');
                 return {
                   id: crypto.randomUUID(),
-                  front, 
-                  back 
+                  front: front.trim(),
+                  back: rest.join('|').trim()
                 }
-            });
+            })
+            .filter(c => c.front && c.back);
           setCards(parsed);
         }
     }, []);

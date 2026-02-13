@@ -8,15 +8,17 @@ export async function POST(req: Request) {
     Return ONLY flashcards.
 
     Format EXACTLY as:
-    front:back;front:back;front:back
+    front|back;front|back;front|back
 
     Rules:
-    - Single line only; no spaces or line breaks.
+    - Use | to separate front from back. Use ; to separate cards.
+    - Single line only; no newlines or line breaks.
     - No intro, explanations, headings, or numbering.
     - Each card must test recall.
     - FRONT = short term or label (1–5 words).
     - BACK = concise answer.
     - Use one consistent recall direction.
+    - Do NOT use | or ; inside card text.
 
     Topic-specific rules:
     - Language topics: use English-alphabet transliteration only (no native script); target term on FRONT, English meaning on BACK.

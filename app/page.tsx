@@ -9,7 +9,7 @@ import NavBar from '@/components/NavBar';
 
 const tickerWords = ['study', 'learn', 'make'];
 
-const testFlashcards = "Velociraptor:A small, fast dinosaur with sharp claws that lived during the Cretaceous period;Triceratops:A herbivorous dinosaur with three horns and a large bony frill;Tyrannosaurus Rex:One of the largest carnivorous dinosaurs with tiny arms and powerful jaws;Stegosaurus:A dinosaur known for its distinctive row of plates along its back;Pterodactyl:A flying reptile that lived alongside dinosaurs during the Mesozoic era;";
+const testFlashcards = "Velociraptor|A small, fast dinosaur with sharp claws that lived during the Cretaceous period;Triceratops|A herbivorous dinosaur with three horns and a large bony frill;Tyrannosaurus Rex|One of the largest carnivorous dinosaurs with tiny arms and powerful jaws;Stegosaurus|A dinosaur known for its distinctive row of plates along its back;Pterodactyl|A flying reptile that lived alongside dinosaurs during the Mesozoic era;";
 const isTesting: boolean = false;
 
 export default function Home() {

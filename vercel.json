@@ -1,8 +1,0 @@
-{
-  "buildCommand": "cd curiosity-cards-app && npm run build",
-  "outputDirectory": "curiosity-cards-app/.next",
-  "installCommand": "cd curiosity-cards-app && npm install",
-  "devCommand": "cd curiosity-cards-app && npm run dev",
-  "framework": "nextjs",
-  "rootDirectory": "curiosity-cards-app"
-}

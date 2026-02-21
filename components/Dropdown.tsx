@@ -1,7 +1,3 @@
-'use client';
-
-import { useState } from 'react';
-
 const OPTIONS = Array.from({ length: 10 }, (_, i) => (i + 1) * 10);
 
 interface DropdownProps {

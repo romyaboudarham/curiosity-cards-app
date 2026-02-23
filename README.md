@@ -1,3 +1,8 @@
+# Curiosity Cards - AI Flashcards App!
+
+## [Try it Yourself!](https://curiosity-cards-app.vercel.app/)
+## [Video Documentation](https://www.youtube.com/watch?time_continue=1&v=enKps2PSPw4&embeds_referring_euri=https%3A%2F%2Fwww.romyaboudarham.com%2F&source_ve_path=Mjg2NjY)
+
 This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
 
 ## Getting Started

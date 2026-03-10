@@ -27,27 +27,25 @@ export default function Home() {
 
     let flashcardsRaw: string;
 
-    if (isTesting) {
-      // Use test data - simulate a small delay for realism
-      await new Promise((resolve) => setTimeout(resolve, 500));
-      flashcardsRaw = testFlashcards;
-    } else {
-      const response = await fetch('/api/generate-flashcards', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          numCards,
-          topic,
-        }),
+    // if (isTesting) {
+    //   // Use test data - simulate a small delay for realism
+    //   await new Promise((resolve) => setTimeout(resolve, 500));
+    //   flashcardsRaw = testFlashcards;
+    // } else {
+      const response = await fetch("/api/generate-flashcards", {
+        method: "POST",
+        body: JSON.stringify({ numCards, topic }),
       });
 
-      const data = await response.json();
-      flashcardsRaw = data.flashcards;
-    }
+      const deck = await response.json();
+   // }
 
-    console.log(flashcardsRaw);
-    localStorage.setItem('flashcardsRaw', flashcardsRaw);
+    console.log(deck);
+    const decks = JSON.parse(localStorage.getItem("decks") || "[]");
+    localStorage.setItem("decks", JSON.stringify([...decks, deck]));
+
     setFeedbackMsg('Flashcards generated!');
+    // Navigate to study page
     router.push('/study');
   };
 

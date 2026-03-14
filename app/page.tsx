@@ -32,21 +32,22 @@ export default function Home() {
     //   await new Promise((resolve) => setTimeout(resolve, 500));
     //   flashcardsRaw = testFlashcards;
     // } else {
-      const response = await fetch("/api/generate-flashcards", {
-        method: "POST",
-        body: JSON.stringify({ numCards, topic }),
-      });
+    const response = await fetch('/api/generate-flashcards', {
+      method: 'POST',
+      body: JSON.stringify({ numCards, topic }),
+    });
 
-      const deck = await response.json();
-   // }
+    const newDeck = await response.json();
+    // }
 
-    console.log(deck);
-    const decks = JSON.parse(localStorage.getItem("decks") || "[]");
-    localStorage.setItem("decks", JSON.stringify([...decks, deck]));
+    console.log('new Deck JSON: ', newDeck);
+    const decks = JSON.parse(localStorage.getItem('decks') || '[]');
+    console.log('current decks JSON: ', decks);
+    localStorage.setItem('decks', JSON.stringify([...decks, newDeck]));
 
     setFeedbackMsg('Flashcards generated!');
     // Navigate to study page
-    router.push('/study');
+    //router.push('/study');
   };
 
   useEffect(() => {

@@ -2,53 +2,77 @@
 
 import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
-import Input from '@/components/Input';
-import PrimaryButton from '@/components/PrimaryButton';
-import Dropdown from '@/components/Dropdown';
 import NavBar from '@/components/NavBar';
+import { Deck } from '@/app/types/deck';
+import { addDeck } from '@/app/utils/dataStorage';
+import CreateNewDeck from '@/components/CreateNewDeck';
 
 const tickerWords = ['study', 'learn', 'make'];
 
-const testFlashcards =
-  'Velociraptor|A small, fast dinosaur with sharp claws that lived during the Cretaceous period;Triceratops|A herbivorous dinosaur with three horns and a large bony frill;Tyrannosaurus Rex|One of the largest carnivorous dinosaurs with tiny arms and powerful jaws;Stegosaurus|A dinosaur known for its distinctive row of plates along its back;Pterodactyl|A flying reptile that lived alongside dinosaurs during the Mesozoic era;';
+const testFlashcards: { deck: Deck } = {
+  deck: {
+    id: 'test-deck-id-1234',
+    createdAt: '2024-01-01T00:00:00.000Z',
+    title: 'Types of Dinosaurs',
+    cards: [
+      {
+        id: 'card-1',
+        front: 'Velociraptor',
+        back: 'A small, fast dinosaur with sharp claws that lived during the Cretaceous period',
+      },
+      {
+        id: 'card-2',
+        front: 'Triceratops',
+        back: 'A herbivorous dinosaur with three horns and a large bony frill',
+      },
+      {
+        id: 'card-3',
+        front: 'Tyrannosaurus Rex',
+        back: 'One of the largest carnivorous dinosaurs with tiny arms and powerful jaws',
+      },
+      {
+        id: 'card-4',
+        front: 'Stegosaurus',
+        back: 'A dinosaur known for its distinctive row of plates along its back',
+      },
+      {
+        id: 'card-5',
+        front: 'Pterodactyl',
+        back: 'A flying reptile that lived alongside dinosaurs during the Mesozoic era',
+      },
+    ],
+  },
+};
 const isTesting: boolean = false;
 
 export default function Home() {
   const router = useRouter();
   const [tickerIndex, setTickerIndex] = useState(0);
-  const [numCards, setNumCards] = useState(10);
-  const [topic, setTopic] = useState('');
   const [feedbackMsg, setFeedbackMsg] = useState('');
 
-  const handleGenerateFlashcards = async () => {
-    if (!topic) return;
+  const handleGenerateFlashcards = async (numCards: number, topic: string) => {
+    console.log(`${numCards} cards about ${topic}`);
 
     setFeedbackMsg(`Generating ${numCards} cards about "${topic}"`);
 
-    let flashcardsRaw: string;
+    let newDeck: { deck: Deck };
 
     if (isTesting) {
-      // Use test data - simulate a small delay for realism
       await new Promise((resolve) => setTimeout(resolve, 500));
-      flashcardsRaw = testFlashcards;
+      newDeck = testFlashcards;
     } else {
       const response = await fetch('/api/generate-flashcards', {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          numCards,
-          topic,
-        }),
+        body: JSON.stringify({ numCards, topic }),
       });
-
-      const data = await response.json();
-      flashcardsRaw = data.flashcards;
+      newDeck = await response.json();
     }
 
-    console.log(flashcardsRaw);
-    localStorage.setItem('flashcardsRaw', flashcardsRaw);
+    addDeck(newDeck.deck);
+
     setFeedbackMsg('Flashcards generated!');
-    router.push('/study');
+    // Navigate to study page
+    router.push(`/study/${newDeck.deck.id}`);
   };
 
   useEffect(() => {
@@ -79,21 +103,7 @@ export default function Home() {
           </header>
 
           <main className="mt-16 w-full max-w-lg mx-auto">
-            <div className="flex gap-2 mb-4">
-              <Dropdown value={numCards} onChange={setNumCards} />
-              <Input
-                value={topic}
-                onChange={setTopic}
-                placeholder="Try 'types of dinosaurs'"
-                className="flex-1"
-              />
-            </div>
-
-            <PrimaryButton
-              text="Generate Flashcards"
-              onClick={handleGenerateFlashcards}
-              className="w-full"
-            />
+            <CreateNewDeck onSubmitDeck={handleGenerateFlashcards} />
           </main>
 
           {feedbackMsg && (

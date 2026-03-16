@@ -1,48 +1,69 @@
-import { NextResponse } from "next/server";
+// app/api/generate-flashcards/route.ts
+import { NextResponse } from 'next/server';
+import { DeckSchema, CardSchema } from '@/app/types/deck';
 
 export async function POST(req: Request) {
   try {
     const { numCards, topic } = await req.json();
 
-    const prompt = `
-    Return ONLY flashcards.
-
-    Format EXACTLY as:
-    front|back;front|back;front|back
-
-    Rules:
-    - Use | to separate front from back. Use ; to separate cards.
-    - Single line only; no newlines or line breaks.
-    - No intro, explanations, headings, or numbering.
-    - Each card must test recall.
-    - FRONT = short term or label (1–5 words).
-    - BACK = concise answer.
-    - Use one consistent recall direction.
-    - Do NOT use | or ; inside card text.
-
-    Topic-specific rules:
-    - Language topics: use English-alphabet transliteration only (no native script); target term on FRONT, English meaning on BACK.
-    - Quote/title topics: FRONT is the quote or title; BACK is the source.
-
-    Create ${numCards} flashcards about ${topic}.
-    Regenerate if the format is not followed exactly.`;
-    
-
-    const aiResponse = await fetch("https://api.openai.com/v1/chat/completions", {
-      method: "POST",
-      headers: {
-        "Authorization": `Bearer ${process.env.OPENAI_API_KEY}`,
-        "Content-Type": "application/json",
+    // 1. Define the schema for OpenAI
+    const deckSchema = {
+      type: 'object',
+      properties: {
+        title: {
+          type: 'string',
+          description: 'Concise descriptive deck title (3-6 words)',
+        },
+        cards: {
+          type: 'array',
+          description: 'Array of flashcards',
+          items: {
+            type: 'object',
+            properties: {
+              front: {
+                type: 'string',
+                description: 'Short recall prompt (1-5 words)',
+              },
+              back: { type: 'string', description: 'Concise answer' },
+            },
+            required: ['front', 'back'],
+          },
+          minItems: numCards,
+        },
       },
-      body: JSON.stringify({
-        model: "gpt-4o-mini",
-        messages: [
-          { role: "system", content: "You generate concise flashcards." },
-          { role: "user", content: prompt },
-        ],
-        temperature: 0.4,
-      }),
-    });
+      required: ['title', 'cards'],
+    };
+
+    // 2. Call the OpenAI API using function_call enforcement
+    const aiResponse = await fetch(
+      'https://api.openai.com/v1/chat/completions',
+      {
+        method: 'POST',
+        headers: {
+          Authorization: `Bearer ${process.env.OPENAI_API_KEY}`,
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          model: 'gpt-4o-mini',
+          messages: [
+            { role: 'system', content: 'You generate concise flashcards.' },
+            {
+              role: 'user',
+              content: `Generate ${numCards} flashcards about "${topic}".`,
+            },
+          ],
+          temperature: 0.4,
+          functions: [
+            {
+              name: 'create_deck',
+              description: 'Return a flashcard deck',
+              parameters: deckSchema,
+            },
+          ],
+          function_call: { name: 'create_deck' }, // force schema enforcement
+        }),
+      }
+    );
 
     if (!aiResponse.ok) {
       const errorText = await aiResponse.text();
@@ -53,12 +74,35 @@ export async function POST(req: Request) {
     }
 
     const aiData = await aiResponse.json();
-    const flashcards = aiData.choices[0].message.content;
 
-    return NextResponse.json({ flashcards });
+    // 3. Extract structured deck object
+    const functionCall = aiData.choices[0].message.function_call;
+    if (!functionCall || !functionCall.arguments) {
+      return NextResponse.json(
+        { error: 'AI did not return deck' },
+        { status: 500 }
+      );
+    }
+
+    const rawJSON = JSON.parse(functionCall.arguments);
+
+    // 4. Add IDs and timestamp to deck and cards
+    const deck = DeckSchema.parse({
+      ...rawJSON,
+      id: crypto.randomUUID(),
+      createdAt: new Date().toISOString(),
+      cards: rawJSON.cards.map((c: any) => ({
+        ...c,
+        id: crypto.randomUUID(),
+      })),
+    });
+
+    // 5. Return the fully-formed deck
+    return NextResponse.json({ deck });
   } catch (error) {
+    console.error(error);
     return NextResponse.json(
-      { error: "Failed to generate flashcards" },
+      { error: 'Failed to generate flashcards' },
       { status: 500 }
     );
   }

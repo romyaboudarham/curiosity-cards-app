@@ -43,7 +43,7 @@ const testFlashcards: { deck: Deck } = {
     ],
   },
 };
-const isTesting: boolean = false;
+const isTesting: boolean = true;
 
 export default function Home() {
   const router = useRouter();

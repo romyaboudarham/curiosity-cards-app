@@ -1,4 +1,4 @@
-@import "tailwindcss";
+@import 'tailwindcss';
 
 /* ===== DESIGN SYSTEM TOKENS FROM FIGMA ===== */
 @theme {
@@ -68,7 +68,8 @@
   --color-border-focus: #1e1e20;
 
   /* Typography */
-  --font-family-sans: var(--font-inria-sans), ui-sans-serif, system-ui, sans-serif;
+  --font-family-sans:
+    var(--font-inria-sans), ui-sans-serif, system-ui, sans-serif;
 }
 
 @layer base {
@@ -79,15 +80,28 @@
 
 /* Fade in/out animation for instructions */
 @keyframes fade-pulse {
-  0%, 100% { opacity: 1; }
-  50% { opacity: 0.3; }
+  0%,
+  100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.3;
+  }
 }
 
 @keyframes fade-in {
-  from { opacity: 0; }
-  to { opacity: 1; }
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
 }
 
 .animate-fade-in {
   animation: fade-in 250ms ease-out;
+}
+
+.card-face {
+  @apply absolute inset-0 bg-surface-background-50 rounded-xl shadow-lg border border-border p-6 flex flex-col items-center justify-center text-center [backface-visibility:hidden];
 }

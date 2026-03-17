@@ -8,6 +8,7 @@ import { addDeck } from '@/app/utils/dataStorage';
 import CreateNewDeck from '@/components/CreateNewDeck';
 
 const tickerWords = ['study', 'learn', 'make'];
+const isTesting: boolean = false;
 
 const testFlashcards: { deck: Deck } = {
   deck: {
@@ -43,7 +44,6 @@ const testFlashcards: { deck: Deck } = {
     ],
   },
 };
-const isTesting: boolean = true;
 
 export default function Home() {
   const router = useRouter();

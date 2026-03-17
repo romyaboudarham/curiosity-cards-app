@@ -134,6 +134,8 @@ export default function FlashCard({
     setDragOffset(0);
   };
 
+  const faceStyles =
+    'absolute inset-0 bg-surface-background-50 rounded-xl shadow-lg border border-border p-6 flex flex-col items-center justify-center text-center [backface-visibility:hidden]';
   const pulseStyle = { animation: 'fade-pulse 2s ease-in-out infinite' };
   const dragRotation = dragOffset * 0.05;
 
@@ -155,7 +157,7 @@ export default function FlashCard({
         }}
       >
         {/* Card Front */}
-        <div className="card-face">
+        <div className={faceStyles}>
           <h1 className="text-4xl font-bold text-text-heading">{card.front}</h1>
           {showFlipInstruction && (
             <>
@@ -173,7 +175,9 @@ export default function FlashCard({
           )}
         </div>
         {/* Card Back */}
-        <div className="card-face transform-[rotateY(180deg)] overflow-hidden">
+        <div
+          className={`${faceStyles} transform-[rotateY(180deg)] overflow-hidden`}
+        >
           <h1 className="text-2xl md:text-3xl font-bold text-text-heading wrap-break-word max-w-full px-2">
             {card.back}
           </h1>

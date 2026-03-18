@@ -27,6 +27,15 @@ export function addDeck(deck: Deck) {
   }
 }
 
+export function deleteDeck(deckId: string) {
+  try {
+    const decks = loadDecks();
+    saveDecks(decks.filter((deck) => deck.id != deckId));
+  } catch (err) {
+    console.log('Failed to delete deck: ', err);
+  }
+}
+
 export function getDeckById(deckId: string): Deck | null {
   try {
     const decks = loadDecks();

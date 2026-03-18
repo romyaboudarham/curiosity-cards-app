@@ -6,19 +6,15 @@ interface DeckCard {
   id: string;
   title: string;
   numCards: number;
+  onDelete: () => void;
 }
 
-export default function DeckCard({ id, title, numCards }: DeckCard) {
+export default function DeckCard({ id, title, numCards, onDelete }: DeckCard) {
   const router = useRouter();
 
   function handleEdit() {
     router.push(`/edit/${id}`);
   }
-
-  function handleDelete() {
-    router.push(`/edit/${id}`);
-  }
-
   function handleClick() {
     router.push(`/study/${id}`);
   }
@@ -30,7 +26,7 @@ export default function DeckCard({ id, title, numCards }: DeckCard) {
     >
       <div className="flex flex-col justify-center items-center text-center h-full">
         <h1 className="text-xl font-bold text-text-heading">{title}</h1>
-        <p className="bottom-1 left-0 right-0">{numCards} CARDS</p>
+        <p className="text-text-body-200 text-sm mt-2">{numCards} CARDS</p>
       </div>
       <div
         className="absolute bottom-4 left-0 right-0 flex justify-center gap-2 opacity-0 group-hover:opacity-100 transition-opacity duration-200"
@@ -43,7 +39,7 @@ export default function DeckCard({ id, title, numCards }: DeckCard) {
         />
         <RoundButton
           icon={<Image src="/trash.png" alt="edit" width={20} height={20} />}
-          onClick={handleDelete}
+          onClick={onDelete}
           noBorder
         />
       </div>

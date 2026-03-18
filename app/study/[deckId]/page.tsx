@@ -9,10 +9,12 @@ import NavBar from '@/components/NavBar';
 import RoundButton from '@/components/RoundButton';
 import { getDeckById } from '@/app/utils/dataStorage';
 import { useParams } from 'next/navigation';
+import { useRouter } from 'next/navigation';
 
 type InstructionStep = 'flip' | 'next' | 'done';
 
 export default function Study() {
+  const router = useRouter();
   const [cards, setCards] = useState<Card[]>([]);
   const [currentIndex, setCurrentIndex] = useState(0);
   const [instructionStep, setInstructionStep] =
@@ -60,11 +62,17 @@ export default function Study() {
   return (
     <div className="flex flex-col min-h-screen px-4 pt-16">
       <NavBar />
-      <main className="w-full max-w-lg mx-auto text-center mt-8">
+      <header className="w-full max-w-lg mx-auto text-center mt-8">
         <div className="flex mt-8">
           <PrimaryButton text="Study" className="flex-1 rounded-r-none" />
-          <SecondaryButton text="Edit" className="flex-1 rounded-l-none" />
+          <SecondaryButton
+            text="Edit"
+            className="flex-1 rounded-l-none"
+            onClick={() => router.push(`/edit/${deckId}`)}
+          />
         </div>
+      </header>
+      <main className="w-full max-w-lg mx-auto text-center">
         <div className="mt-8">
           {cards.length > 0 && currentIndex < cards.length ? (
             <FlashCard

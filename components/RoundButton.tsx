@@ -8,11 +8,12 @@ interface RoundButtonProps {
     onClick?: () => void,
     className?: string,
     href?: string,
-    label?: string
+    label?: string,
+    noBorder?: boolean
 }
 
-export default function RoundButton({ icon, onClick, className = '', href, label }: RoundButtonProps) {
-    const baseClasses = `text-text-button-secondary cursor-pointer rounded-full border border-border bg-surface-background-50 flex items-center justify-center text-text-body hover:bg-surface-background-100 hover:border-border-focus transition-colors ${className}`;
+export default function RoundButton({ icon, onClick, className = '', href, label, noBorder = false }: RoundButtonProps) {
+    const baseClasses = `text-text-button-secondary cursor-pointer rounded-full ${noBorder ? '' : 'border border-border hover:border-border-focus'} bg-surface-background-50 flex items-center justify-center text-text-body hover:bg-surface-background-100 transition-colors ${className}`;
     
     const content = (
         <>

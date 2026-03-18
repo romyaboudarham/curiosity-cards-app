@@ -1,7 +1,7 @@
 'use client';
 
 import { useState, useEffect, useRef } from 'react';
-import { Card } from '@/app/types';
+import { Card } from '@/app/types/deck';
 
 const SWIPE_THRESHOLD = 40;
 const THROW_THRESHOLD = 100;
@@ -141,7 +141,7 @@ export default function FlashCard({
 
   return (
     <div
-      className="cursor-pointer perspective-[1000px] aspect-1/1 md:aspect-3/2 animate-fade-in touch-none select-none"
+      className="cursor-pointer perspective-[1000px] aspect-square md:aspect-3/2 animate-fade-in touch-none select-none"
       onClick={handleClick}
       onTouchStart={handleTouchStart}
       onTouchMove={handleTouchMove}

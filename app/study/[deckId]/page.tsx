@@ -77,7 +77,7 @@ export default function Study() {
               showSwipeInstruction={showNextInstruction}
             />
           ) : (
-            <div className="bg-surface-background-50 rounded-xl shadow-lg border border-border p-8 aspect-[3/2] flex flex-col items-center justify-center">
+            <div className="bg-surface-background-50 rounded-xl shadow-lg border border-border p-8 aspect-square md:aspect-3/2 flex flex-col items-center justify-center">
               <h2 className="text-2xl font-bold text-text-heading mb-4">
                 You've reviewed all {cards.length} cards
               </h2>

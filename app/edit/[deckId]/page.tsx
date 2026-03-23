@@ -25,7 +25,7 @@ export default function Edit() {
   return (
     <div className="flex flex-col min-h-screen px-4 pt-16">
       <NavBar />
-      <header className="w-full max-w-lg mx-auto text-center mt-8">
+      <header className="w-full max-w-lg mx-auto text-center m-8">
         <div className="flex mt-8">
           <SecondaryButton
             text="Study"
@@ -36,7 +36,7 @@ export default function Edit() {
         </div>
       </header>
       <main className="w-full max-w-5xl mx-auto">
-        <div className="mt-8">
+        <div>
           {cards.map((card) => (
             <EditCard key={card.id} card={card} />
           ))}

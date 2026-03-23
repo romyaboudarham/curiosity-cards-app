@@ -62,7 +62,7 @@ export default function Study() {
   return (
     <div className="flex flex-col min-h-screen px-4 pt-16">
       <NavBar />
-      <header className="w-full max-w-lg mx-auto text-center mt-8">
+      <header className="w-full max-w-lg mx-auto text-center m-8">
         <div className="flex mt-8">
           <PrimaryButton text="Study" className="flex-1 rounded-r-none" />
           <SecondaryButton
@@ -73,7 +73,7 @@ export default function Study() {
         </div>
       </header>
       <main className="w-full max-w-lg mx-auto text-center">
-        <div className="mt-8">
+        <div>
           {cards.length > 0 && currentIndex < cards.length ? (
             <FlashCard
               key={cards[currentIndex].id}

@@ -1,8 +1,8 @@
-'use client'
+'use client';
 
-import Link from "next/link";
-import Image from "next/image";
-import RoundButton from "./RoundButton";
+import Link from 'next/link';
+import Image from 'next/image';
+import ActionButton from './ActionButton';
 
 export default function NavBar() {
   return (
@@ -10,7 +10,10 @@ export default function NavBar() {
       <div className="max-w-8xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex justify-between items-center h-14 sm:h-16 md:h-20">
           {/* Logo */}
-          <Link href="/" className="flex items-center space-x-2 group cursor-pointer">
+          <Link
+            href="/"
+            className="flex items-center space-x-2 group cursor-pointer"
+          >
             <Image
               src="/logo-icon.png"
               alt="CuriosityCards"
@@ -25,27 +28,35 @@ export default function NavBar() {
 
           {/* Nav Links */}
           <div className="flex items-center space-x-2 lg:space-x-3 pr-9">
-            <RoundButton
+            <ActionButton
               href="/profile"
-              icon={<img src="/profile-icon.png" alt="Profile" className="w-6 h-6" />}
+              icon={
+                <img
+                  src="/profile-icon.png"
+                  alt="Profile"
+                  className="w-6 h-6"
+                />
+              }
               label="Profile"
               className="w-9 h-9"
             />
-            <RoundButton
+            <ActionButton
               href="/decks"
-              icon={<img src="/decks-icon.png" alt="Decks" className="w-6 h-6" />}
+              icon={
+                <img src="/decks-icon.png" alt="Decks" className="w-6 h-6" />
+              }
               label="Decks"
               className="w-9 h-9"
             />
-            <RoundButton
+            <ActionButton
               href="/"
               icon={<img src="/add-icon.png" alt="Add" className="w-6 h-6" />}
-              label="Add"
+              label="New Deck"
               className="w-9 h-9"
             />
           </div>
         </div>
       </div>
     </nav>
-  )
+  );
 }

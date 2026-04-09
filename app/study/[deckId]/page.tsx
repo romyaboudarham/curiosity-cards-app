@@ -1,15 +1,24 @@
 'use client';
 
+import {
+  Shuffle,
+  ArrowLeftRight,
+  ChevronLeft,
+  ChevronRight,
+  SquarePen,
+} from 'lucide-react';
+
 import { useState, useEffect } from 'react';
 import { Card } from '@/app/types/deck';
 import PrimaryButton from '@/components/PrimaryButton';
 import SecondaryButton from '@/components/SecondaryButton';
 import FlashCard from '@/components/FlashCard';
 import NavBar from '@/components/NavBar';
-import RoundButton from '@/components/RoundButton';
+import ActionButton from '@/components/ActionButton';
 import { getDeckById } from '@/app/utils/dataStorage';
 import { useParams } from 'next/navigation';
 import { useRouter } from 'next/navigation';
+import ActionNavbar from '@/components/ActionNavbar';
 
 type InstructionStep = 'flip' | 'next' | 'done';
 
@@ -20,6 +29,34 @@ export default function Study() {
   const [instructionStep, setInstructionStep] =
     useState<InstructionStep>('flip');
   const { deckId } = useParams<{ deckId: string }>();
+
+  const handleSwap = () =>
+    setCards((prev) =>
+      prev.map((c) => ({ ...c, front: c.back, back: c.front }))
+    );
+
+  const handlePrev = () => router.back();
+
+  const handleShuffle = () => handleRestart();
+
+  const actions = [
+    {
+      icon: <ArrowLeftRight className="w-5 h-5" />,
+      text: 'Swap',
+      onClick: handleSwap,
+    },
+    {
+      icon: <Shuffle className="w-5 h-5" />,
+      text: 'Shuffle',
+      onClick: handleShuffle,
+    },
+    {
+      icon: <SquarePen className="w-5 h-5" />,
+      text: 'Edit',
+      onClick: () => router.push(`/edit/${deckId}`),
+      variant: 'primary' as const,
+    },
+  ];
 
   const handlePrevious = () => {
     if (currentIndex > 0) {
@@ -62,8 +99,8 @@ export default function Study() {
   return (
     <div className="flex flex-col min-h-screen px-4 pt-16">
       <NavBar />
-      <header className="w-full max-w-lg mx-auto text-center m-8">
-        <div className="flex mt-8">
+      <header className="w-full max-w-lg md:max-w-xl mx-auto text-center mt-8">
+        <div className="flex mb-5">
           <PrimaryButton text="Study" className="flex-1 rounded-r-none" />
           <SecondaryButton
             text="Edit"
@@ -71,8 +108,9 @@ export default function Study() {
             onClick={() => router.push(`/edit/${deckId}`)}
           />
         </div>
+        <ActionNavbar buttons={actions} />
       </header>
-      <main className="w-full max-w-lg mx-auto text-center">
+      <main className="w-full max-w-lg md:max-w-xl mx-auto text-center mt-6">
         <div>
           {cards.length > 0 && currentIndex < cards.length ? (
             <FlashCard
@@ -95,46 +133,18 @@ export default function Study() {
         </div>
         {/* Card count with navigation buttons */}
         {cards.length > 0 && currentIndex < cards.length && (
-          <div className="mt-4 flex items-center justify-center gap-4">
-            <RoundButton
-              icon={
-                <svg
-                  className="w-6 h-6"
-                  fill="none"
-                  stroke="currentColor"
-                  strokeWidth="2"
-                  viewBox="0 0 24 24"
-                >
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    d="M15 19l-7-7 7-7"
-                  />
-                </svg>
-              }
-              onClick={handlePrevious}
+          <div className="mt-6 flex items-center justify-center gap-4">
+            <ActionButton
+              icon={<ChevronLeft className="w-6 h-6" />}
+              onClick={handleNext}
               className="hidden md:flex w-8 h-8"
             />
             <p className="text-text-body-200 min-w-[60px] text-lg">
               {currentIndex + 1}/{cards.length}
             </p>
             <div className="relative hidden md:block">
-              <RoundButton
-                icon={
-                  <svg
-                    className="w-6 h-6"
-                    fill="none"
-                    stroke="currentColor"
-                    strokeWidth="2"
-                    viewBox="0 0 24 24"
-                  >
-                    <path
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      d="M9 5l7 7-7 7"
-                    />
-                  </svg>
-                }
+              <ActionButton
+                icon={<ChevronRight className="w-6 h-6" />}
                 onClick={handleNext}
                 className="w-8 h-8"
               />

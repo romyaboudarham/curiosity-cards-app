@@ -26,6 +26,12 @@ export default function FlashCard({
   showSwipeInstruction = false,
 }: FlashCardProps) {
   const [isFlipped, setIsFlipped] = useState(false);
+  const [isReady, setIsReady] = useState(false);
+
+  useEffect(() => {
+    const timer = setTimeout(() => setIsReady(true), 250);
+    return () => clearTimeout(timer);
+  }, []);
   const [dragOffset, setDragOffset] = useState(0);
   const [isDragging, setIsDragging] = useState(false);
   const [isAnimating, setIsAnimating] = useState(false);
@@ -127,7 +133,7 @@ export default function FlashCard({
         onNext?.();
         setDragOffset(0);
         setIsAnimating(false);
-      }, 200);
+      }, 100);
       return;
     }
 
@@ -151,14 +157,16 @@ export default function FlashCard({
         className="relative w-full h-full transform-3d"
         style={{
           transform: `translateX(${dragOffset}px) rotateY(${isFlipped ? 180 : 0}deg) rotateZ(${dragRotation}deg)`,
-          transition: isDragging
+          transition: !isReady || isDragging
             ? 'none'
-            : 'transform 0.5s cubic-bezier(0.34, 1.56, 0.64, 1)',
+            : 'transform 0.2s cubic-bezier(0.34, 1.56, 0.64, 1)',
         }}
       >
         {/* Card Front */}
         <div className={faceStyles}>
-          <h1 className="text-4xl font-bold text-text-heading">{card.front}</h1>
+          <h1 className="text-4xl md:text-4xl font-bold text-text-heading">
+            {card.front}
+          </h1>
           {showFlipInstruction && (
             <>
               <p
@@ -178,7 +186,7 @@ export default function FlashCard({
         <div
           className={`${faceStyles} transform-[rotateY(180deg)] overflow-hidden`}
         >
-          <h1 className="text-2xl md:text-3xl font-bold text-text-heading wrap-break-word max-w-full px-2">
+          <h1 className="text-4xl md:text-4xl font-bold text-text-heading wrap-break-word max-w-full px-2">
             {card.back}
           </h1>
           {showSwipeInstruction && (

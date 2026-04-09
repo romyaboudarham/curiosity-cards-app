@@ -68,7 +68,7 @@ export default function Home() {
       newDeck = await response.json();
     }
 
-    addDeck(newDeck.deck);
+    addDeck({ ...newDeck.deck, prompt: topic });
 
     setFeedbackMsg('Flashcards generated!');
     // Navigate to study page

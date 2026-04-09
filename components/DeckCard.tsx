@@ -1,5 +1,5 @@
 import Image from 'next/image';
-import RoundButton from './RoundButton';
+import ActionButton from './ActionButton';
 import { useRouter } from 'next/navigation';
 
 interface DeckCard {
@@ -29,15 +29,15 @@ export default function DeckCard({ id, title, numCards, onDelete }: DeckCard) {
         <p className="text-text-body-200 text-sm mt-2">{numCards} CARDS</p>
       </div>
       <div
-        className="absolute bottom-4 left-0 right-0 flex justify-center gap-2 opacity-0 group-hover:opacity-100 transition-opacity duration-200"
+        className="absolute bottom-4 left-0 right-0 flex justify-center gap-2 opacity-100 md:opacity-0 md:group-hover:opacity-100 transition-opacity duration-200"
         onClick={(e) => e.stopPropagation()}
       >
-        <RoundButton
+        <ActionButton
           icon={<Image src="/edit.png" alt="edit" width={20} height={20} />}
           onClick={handleEdit}
           noBorder
         />
-        <RoundButton
+        <ActionButton
           icon={<Image src="/trash.png" alt="edit" width={20} height={20} />}
           onClick={onDelete}
           noBorder

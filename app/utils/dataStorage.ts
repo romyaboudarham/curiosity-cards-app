@@ -21,7 +21,7 @@ export function saveDecks(decks: Deck[]) {
 export function addDeck(deck: Deck) {
   try {
     const decks = loadDecks();
-    saveDecks([...decks, deck]);
+    saveDecks([deck, ...decks]);
   } catch (err) {
     console.log('Failed to add deck to local storage: ', err);
   }

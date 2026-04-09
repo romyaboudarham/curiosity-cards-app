@@ -9,7 +9,9 @@
     "lint": "eslint"
   },
   "dependencies": {
+    "@heroicons/react": "^2.2.0",
     "@react-three/fiber": "^9.5.0",
+    "lucide-react": "^1.8.0",
     "next": "16.1.6",
     "react": "19.2.3",
     "react-dom": "19.2.3",

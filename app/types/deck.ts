@@ -10,6 +10,7 @@ export const DeckSchema = z.object({
   id: z.string().min(1),
   createdAt: z.string().min(1),
   title: z.string().min(1),
+  prompt: z.string().optional(),
   cards: z.array(CardSchema).min(1),
 });
 

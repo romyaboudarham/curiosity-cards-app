@@ -1,4 +1,4 @@
-import { Deck } from '@/app/types/deck';
+import { Card, Deck } from '@/app/types/deck';
 import { stringify } from 'querystring';
 
 const STORAGE_KEY = 'decks';
@@ -42,6 +42,29 @@ export function getDeckById(deckId: string): Deck | null {
     return decks.find((deck) => deck.id === deckId) ?? null;
   } catch (err) {
     console.log('Failed to get deck by ID: ', err);
+    return null;
+  }
+}
+
+export function updateCard(
+  deckId: string,
+  cardId: string,
+  front: string,
+  back: string
+) {
+  try {
+    const deck = getDeckById(deckId);
+    if (!deck) return;
+    const updatedDeck = {
+      ...deck,
+      cards: deck.cards.map((card) =>
+        card.id === cardId ? { ...card, front, back } : card
+      ),
+    };
+    const decks = loadDecks();
+    saveDecks(decks.map((d) => (d.id === deckId ? updatedDeck : d)));
+  } catch (err) {
+    console.log('Failed to update card: ', err);
     return null;
   }
 }

@@ -36,8 +36,8 @@ function FloatingButton({ action }: { action: FloatingAction }) {
 export default function FloatingActionBar({ actions }: FloatingActionBarProps) {
   return (
     <>
-      {/* Mobile: horizontal row fixed at bottom center */}
-      <div className="md:hidden fixed bottom-6 left-1/2 -translate-x-1/2 flex flex-row gap-4 z-40 bg-surface-background-50 border border-border rounded-xl shadow-lg p-4">
+      {/* Mobile: sticky full-width bottom nav */}
+      <div className="md:hidden fixed bottom-0 left-0 right-0 flex flex-row justify-around z-40 bg-surface-background-50 border-t border-border shadow-lg px-4 py-3">
         {actions.map((action, i) => (
           <FloatingButton key={i} action={action} />
         ))}

@@ -5,23 +5,27 @@ import {
   CirclePlus,
   ArrowRightLeft,
   Sparkles,
+  Plus,
 } from 'lucide-react';
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { Card } from '@/app/types/deck';
 import NavBar from '@/components/NavBar';
-import { getDeckById, updateCard } from '@/app/utils/dataStorage';
+import { getDeckById, updateCard, addCard, deleteCard } from '@/app/utils/dataStorage';
 import PrimaryButton from '@/components/PrimaryButton';
 import SecondaryButton from '@/components/SecondaryButton';
 import { useParams } from 'next/navigation';
 import { useRouter } from 'next/navigation';
 import EditCard from '@/components/EditCard';
 import FloatingActionBar from '@/components/FloatingActionBar';
+import AIChat from '@/components/AIChat';
 
 export default function Edit() {
   const router = useRouter();
   const { deckId } = useParams<{ deckId: string }>();
   const [cards, setCards] = useState<Card[]>([]);
+  const [aiChatOpen, setAiChatOpen] = useState(false);
+  const addButtonRef = useRef<HTMLButtonElement>(null);
 
   useEffect(() => {
     const deck = getDeckById(deckId);
@@ -36,7 +40,22 @@ export default function Edit() {
     updateCard(deckId, cardId, front, back);
   }
 
-  const handleAdd = () => {};
+  function handleOnDelete(cardId: string) {
+    console.log('deleting', cardId);
+    deleteCard(cardId, deckId);
+    setCards((prev) => prev.filter((card) => card.id != cardId));
+  }
+
+  const handleAdd = () => {
+    const newCard: Card = {
+      id: crypto.randomUUID(),
+      front: '',
+      back: '',
+    }
+    addCard(newCard, deckId);
+    setCards((prev) => [...prev, newCard]);
+    setTimeout(() => addButtonRef.current?.scrollIntoView({ behavior: 'smooth', block: 'end' }), 50);
+  };
 
   const actions = [
     {
@@ -52,7 +71,7 @@ export default function Edit() {
     {
       icon: <Sparkles className="w-5 h-5" />,
       label: 'AI Edit',
-      onClick: handleAdd,
+      onClick: () => setAiChatOpen(true),
     },
     {
       icon: <BookOpenText className="w-5 h-5" />,
@@ -76,11 +95,19 @@ export default function Edit() {
         </div>
       </header>
       <FloatingActionBar actions={actions} />
-      <main className="w-full max-w-4xl mx-auto mt-6">
+      <AIChat open={aiChatOpen} onClose={() => setAiChatOpen(false)} />
+      <main className="w-full max-w-4xl mx-auto mt-6 pb-28 md:pb-6">
         <div>
           {cards.map((card) => (
-            <EditCard key={card.id} card={card} onSave={handleOnSave} />
+            <EditCard key={card.id} card={card} onSave={handleOnSave} onDelete={handleOnDelete}/>
           ))}
+          <button
+            ref={addButtonRef}
+            onClick={handleAdd}
+            className="flex items-center justify-center w-full min-h-14 border cursor-pointer border-dashed border-border rounded-xl mb-2 text-text-body-200 hover:text-text-body hover:border-border-focus transition-colors"
+          >
+            <Plus className="w-5 h-5" />
+          </button>
         </div>
       </main>
     </div>

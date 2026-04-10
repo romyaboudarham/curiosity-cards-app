@@ -65,7 +65,12 @@ export default function Home() {
         method: 'POST',
         body: JSON.stringify({ numCards, topic }),
       });
-      newDeck = await response.json();
+      const data = await response.json();
+      if (!response.ok || !data.deck) {
+        setFeedbackMsg(data.error ?? 'Failed to generate flashcards');
+        return;
+      }
+      newDeck = data;
     }
 
     addDeck({ ...newDeck.deck, prompt: topic });

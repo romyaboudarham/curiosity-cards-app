@@ -1,5 +1,4 @@
 import { Card, Deck } from '@/app/types/deck';
-import { stringify } from 'querystring';
 
 const STORAGE_KEY = 'decks';
 
@@ -65,6 +64,38 @@ export function updateCard(
     saveDecks(decks.map((d) => (d.id === deckId ? updatedDeck : d)));
   } catch (err) {
     console.log('Failed to update card: ', err);
+    return null;
+  }
+}
+
+export function addCard(card: Card, deckId: string) {
+  try {
+    const deck = getDeckById(deckId);
+    if (!deck) return;
+    const updatedDeck = {
+      ...deck,
+      cards: [...deck.cards, card]
+    }
+    const decks = loadDecks();
+    saveDecks(decks.map((d) => (d.id === deckId ? updatedDeck : d)));
+  } catch (err) {
+    console.log('Failed to add card', err);
+    return null
+  }
+}
+
+export function deleteCard(cardId: string, deckId: string) {
+  try {
+    const deck = getDeckById(deckId);
+    if (!deck) return;
+    const updatedDeck = {
+      ...deck,
+      cards: deck.cards.filter((card) => card.id != cardId),
+    }
+    const decks = loadDecks();
+    saveDecks(decks.map((d) => (d.id === deckId ? updatedDeck : d)));
+  } catch (err) {
+    console.log('Failed to delete card', err);
     return null;
   }
 }

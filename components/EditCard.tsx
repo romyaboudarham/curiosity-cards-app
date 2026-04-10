@@ -8,7 +8,7 @@ import ActionButton from './ActionButton';
 interface EditCardProps {
   card: Card;
   onSave: (cardId: string, front: string, back: string) => void;
-  onDelete?: () => void;
+  onDelete: (cardId: string) => void;
 }
 
 const LINE_HEIGHT = 24; // px — matches text-base line-height
@@ -39,10 +39,6 @@ export default function EditCard({ card, onSave, onDelete }: EditCardProps) {
 
   return (
     <div className="group relative flex items-center gap-4 w-full min-h-14 bg-surface-background-50 border border-border rounded-xl px-4 py-3 mb-2 focus-within:border-border-focus">
-      {/* Actions — always visible inside card on mobile, hover outside on desktop */}
-      <div className="flex flex-col gap-1 md:absolute md:-right-10 md:top-1/2 md:-translate-y-1/2 md:opacity-0 md:group-hover:opacity-100 md:transition-opacity md:duration-150">
-        <ActionButton icon={<Trash2 className="w-4 h-4" />} onClick={onDelete} className="w-8 h-8" rounded="md" />
-      </div>
       <label className="flex flex-col flex-1 cursor-text">
         <span className="text-xs text-text-body-200">FRONT</span>
         <textarea
@@ -68,6 +64,10 @@ export default function EditCard({ card, onSave, onDelete }: EditCardProps) {
           onBlur={handleSave}
         />
       </label>
+       {/* Actions — always visible inside card on mobile, hover outside on desktop */}
+      <div className="flex flex-col gap-1 md:absolute md:-right-10 md:top-1/2 md:-translate-y-1/2 md:opacity-0 md:group-hover:opacity-100 md:transition-opacity md:duration-150">
+        <ActionButton icon={<Trash2 className="w-4 h-4" />} onClick={() => onDelete(card.id)} className="w-8 h-8" rounded="md" />
+      </div>
     </div>
   );
 }

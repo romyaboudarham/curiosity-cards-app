@@ -19,6 +19,7 @@ import { getDeckById } from '@/app/utils/dataStorage';
 import { useParams } from 'next/navigation';
 import { useRouter } from 'next/navigation';
 import ActionNavbar from '@/components/ActionNavbar';
+import FloatingActionBar from '@/components/FloatingActionBar';
 
 type InstructionStep = 'flip' | 'next' | 'done';
 
@@ -42,17 +43,17 @@ export default function Study() {
   const actions = [
     {
       icon: <ArrowLeftRight className="w-5 h-5" />,
-      text: 'Swap',
+      label: 'Swap',
       onClick: handleSwap,
     },
     {
       icon: <Shuffle className="w-5 h-5" />,
-      text: 'Shuffle',
+      label: 'Shuffle',
       onClick: handleShuffle,
     },
     {
       icon: <SquarePen className="w-5 h-5" />,
-      text: 'Edit',
+      label: 'Edit',
       onClick: () => router.push(`/edit/${deckId}`),
       variant: 'primary' as const,
     },
@@ -108,7 +109,7 @@ export default function Study() {
             onClick={() => router.push(`/edit/${deckId}`)}
           />
         </div>
-        <ActionNavbar buttons={actions} />
+        <FloatingActionBar actions={actions} />
       </header>
       <main className="w-full max-w-lg md:max-w-xl mx-auto text-center mt-6">
         <div>

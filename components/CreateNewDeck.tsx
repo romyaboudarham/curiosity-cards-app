@@ -1,7 +1,7 @@
 import * as React from 'react';
 
 import PrimaryButton from '@/components/PrimaryButton';
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 
 const OPTIONS = Array.from({ length: 10 }, (_, i) => (i + 1) * 10);
 
@@ -33,7 +33,8 @@ export default function CreateNewDeck({
         <div className="flex gap-2 mb-4">
           <select
             ref={dropDownRef}
-            className="bg-surface-background-50 border border-border rounded-md p-2 text-text-body cursor-pointer focus:outline-none hover:border-border-focus"
+            aria-label="Number of cards"
+            className="bg-surface-background-50 border border-border rounded-md p-2 text-text-body cursor-pointer hover:border-border-focus focus-visible:outline-none focus-visible:border-border-focus"
           >
             {OPTIONS.map((num) => (
               <option key={num} value={num}>
@@ -44,11 +45,13 @@ export default function CreateNewDeck({
           <input
             ref={inputRef}
             type="text"
+            aria-label="Deck topic"
+            aria-invalid={error}
             onChange={handleChange}
             placeholder={
               error ? 'Please enter a topic' : 'Try "types of dinosaurs"'
             }
-            className={`bg-surface-background-50 border rounded-md p-2 focus:outline-none flex-1 ${
+            className={`bg-surface-background-50 border rounded-md p-2 flex-1 focus-visible:outline-none focus-visible:border-border-focus ${
               error
                 ? 'border-red-500 placeholder-red-400'
                 : 'border-border focus:border-border-focus'

@@ -82,34 +82,36 @@ export default function Edit() {
   ];
 
   return (
-    <div className="flex flex-col min-h-screen px-4 pt-16">
-      <NavBar />
-      <header className="w-full max-w-lg md:max-w-2xl mx-auto text-center mt-8">
-        <div className="flex mb-5">
-          <SecondaryButton
-            text="Study"
-            className="flex-1 rounded-r-none"
-            onClick={() => router.push(`/study/${deckId}`)}
-          />
-          <PrimaryButton text="Edit" className="flex-1 rounded-l-none" />
-        </div>
-      </header>
-      <FloatingActionBar actions={actions} />
+    <>
+      <div inert={aiChatOpen} className="flex flex-col min-h-screen px-4 pt-16">
+        <NavBar />
+        <header className="w-full max-w-lg md:max-w-2xl mx-auto text-center mt-8">
+          <div className="flex mb-5">
+            <SecondaryButton
+              text="Study"
+              className="flex-1 rounded-r-none"
+              onClick={() => router.push(`/study/${deckId}`)}
+            />
+            <PrimaryButton text="Edit" className="flex-1 rounded-l-none" />
+          </div>
+        </header>
+        <FloatingActionBar actions={actions} />
+        <main className="w-full max-w-4xl mx-auto mt-6 pb-28 md:pb-6">
+          <div>
+            {cards.map((card) => (
+              <EditCard key={card.id} card={card} onSave={handleOnSave} onDelete={handleOnDelete}/>
+            ))}
+            <button
+              ref={addButtonRef}
+              onClick={handleAdd}
+              className="flex items-center justify-center w-full min-h-14 border cursor-pointer border-dashed border-border rounded-xl mb-2 text-text-body-200 hover:text-text-body hover:border-border-focus transition-colors"
+            >
+              <Plus className="w-5 h-5" />
+            </button>
+          </div>
+        </main>
+      </div>
       <AIChat open={aiChatOpen} onClose={() => setAiChatOpen(false)} />
-      <main className="w-full max-w-4xl mx-auto mt-6 pb-28 md:pb-6">
-        <div>
-          {cards.map((card) => (
-            <EditCard key={card.id} card={card} onSave={handleOnSave} onDelete={handleOnDelete}/>
-          ))}
-          <button
-            ref={addButtonRef}
-            onClick={handleAdd}
-            className="flex items-center justify-center w-full min-h-14 border cursor-pointer border-dashed border-border rounded-xl mb-2 text-text-body-200 hover:text-text-body hover:border-border-focus transition-colors"
-          >
-            <Plus className="w-5 h-5" />
-          </button>
-        </div>
-      </main>
-    </div>
+    </>
   );
 }

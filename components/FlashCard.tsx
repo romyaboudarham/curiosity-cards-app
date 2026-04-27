@@ -58,10 +58,7 @@ export default function FlashCard({
 
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
-      if (e.key === ' ') {
-        e.preventDefault();
-        handleFlip();
-      } else if (e.key === 'ArrowRight') {
+      if (e.key === 'ArrowRight') {
         e.preventDefault();
         onNext?.();
       } else if (e.key === 'ArrowLeft') {
@@ -145,66 +142,83 @@ export default function FlashCard({
   const pulseStyle = { animation: 'fade-pulse 2s ease-in-out infinite' };
   const dragRotation = dragOffset * 0.05;
 
+  const ariaLabel = isFlipped
+    ? `Answer: ${card.back}. Press Space or Enter to show question.`
+    : `Question: ${card.front}. Press Space or Enter to reveal answer.`;
+
   return (
-    <div
-      className="cursor-pointer perspective-[1000px] aspect-square md:aspect-3/2 animate-fade-in touch-none select-none"
-      onClick={handleClick}
-      onTouchStart={handleTouchStart}
-      onTouchMove={handleTouchMove}
-      onTouchEnd={handleTouchEnd}
-    >
-      <div
-        className="relative w-full h-full transform-3d"
-        style={{
-          transform: `translateX(${dragOffset}px) rotateY(${isFlipped ? 180 : 0}deg) rotateZ(${dragRotation}deg)`,
-          transition: !isReady || isDragging
-            ? 'none'
-            : 'transform 0.2s cubic-bezier(0.34, 1.56, 0.64, 1)',
-        }}
+    <>
+      <span className="sr-only" aria-live="polite" aria-atomic="true">
+        {isFlipped ? `Answer revealed: ${card.back}` : `Question: ${card.front}`}
+      </span>
+      <button
+        type="button"
+        className="cursor-pointer perspective-[1000px] aspect-square md:aspect-3/2 animate-fade-in touch-none select-none bg-transparent border-0 p-0 w-full focus-visible:outline-none focus-visible:border-border-focus rounded-xl"
+        onClick={handleClick}
+        onTouchStart={handleTouchStart}
+        onTouchMove={handleTouchMove}
+        onTouchEnd={handleTouchEnd}
+        aria-label={ariaLabel}
       >
-        {/* Card Front */}
-        <div className={faceStyles}>
-          <h1 className="text-4xl md:text-4xl font-bold text-text-heading">
-            {card.front}
-          </h1>
-          {showFlipInstruction && (
-            <>
-              <p
-                className="absolute bottom-24 text-green-500 font-medium"
-                style={pulseStyle}
-              >
-                click to flip
-              </p>
-              <div
-                className="absolute inset-0 rounded-xl ring-2 ring-green-500 ring-offset-2 pointer-events-none"
-                style={pulseStyle}
-              />
-            </>
-          )}
-        </div>
-        {/* Card Back */}
         <div
-          className={`${faceStyles} transform-[rotateY(180deg)] overflow-hidden`}
+          className="relative w-full h-full transform-3d"
+          style={{
+            transform: `translateX(${dragOffset}px) rotateY(${isFlipped ? 180 : 0}deg) rotateZ(${dragRotation}deg)`,
+            transition: !isReady || isDragging
+              ? 'none'
+              : 'transform 0.2s cubic-bezier(0.34, 1.56, 0.64, 1)',
+          }}
         >
-          <h1 className="text-4xl md:text-4xl font-bold text-text-heading wrap-break-word max-w-full px-2">
-            {card.back}
-          </h1>
-          {showSwipeInstruction && (
-            <>
-              <p
-                className="mt-4 text-green-500 font-medium md:hidden"
-                style={pulseStyle}
-              >
-                swipe for next
-              </p>
-              <div
-                className="absolute inset-0 rounded-xl ring-2 ring-green-500 ring-offset-2 pointer-events-none md:hidden"
-                style={pulseStyle}
-              />
-            </>
-          )}
+          {/* Card Front */}
+          <div className={faceStyles}>
+            <p className="text-4xl md:text-4xl font-bold text-text-heading">
+              {card.front}
+            </p>
+            {showFlipInstruction && (
+              <>
+                <p
+                  className="absolute bottom-24 text-green-500 font-medium"
+                  style={pulseStyle}
+                  aria-hidden="true"
+                >
+                  click to flip
+                </p>
+                <span className="sr-only">Press Space or Enter to flip the card.</span>
+                <div
+                  className="absolute inset-0 rounded-xl ring-2 ring-green-500 ring-offset-2 pointer-events-none"
+                  style={pulseStyle}
+                  aria-hidden="true"
+                />
+              </>
+            )}
+          </div>
+          {/* Card Back */}
+          <div
+            className={`${faceStyles} transform-[rotateY(180deg)] overflow-hidden`}
+          >
+            <p className="text-4xl md:text-4xl font-bold text-text-heading wrap-break-word max-w-full px-2">
+              {card.back}
+            </p>
+            {showSwipeInstruction && (
+              <>
+                <p
+                  className="mt-4 text-green-500 font-medium md:hidden"
+                  style={pulseStyle}
+                  aria-hidden="true"
+                >
+                  swipe for next
+                </p>
+                <span className="sr-only">Swipe left or press the right arrow key for the next card.</span>
+                <div
+                  className="absolute inset-0 rounded-xl ring-2 ring-green-500 ring-offset-2 pointer-events-none md:hidden"
+                  style={pulseStyle}
+                  aria-hidden="true"
+                />
+              </>
+            )}
+          </div>
         </div>
-      </div>
-    </div>
+      </button>
+    </>
   );
 }

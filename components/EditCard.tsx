@@ -44,7 +44,7 @@ export default function EditCard({ card, onSave, onDelete }: EditCardProps) {
         <textarea
           ref={frontRef}
           rows={1}
-          className="text-text-heading bg-transparent focus:outline-none w-full resize-none overflow-hidden leading-6"
+          className="text-text-heading bg-transparent focus-visible:outline-none w-full resize-none overflow-hidden leading-6"
           style={{ maxHeight: MAX_HEIGHT }}
           defaultValue={card.front}
           onInput={(e) => autoResize(e.currentTarget, prevFront)}
@@ -57,7 +57,7 @@ export default function EditCard({ card, onSave, onDelete }: EditCardProps) {
         <textarea
           ref={backRef}
           rows={1}
-          className="text-text-heading bg-transparent focus:outline-none w-full resize-none overflow-hidden leading-6"
+          className="text-text-heading bg-transparent focus-visible:outline-none w-full resize-none overflow-hidden leading-6"
           style={{ maxHeight: MAX_HEIGHT }}
           defaultValue={card.back}
           onInput={(e) => autoResize(e.currentTarget, prevBack)}

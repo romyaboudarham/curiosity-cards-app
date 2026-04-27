@@ -26,11 +26,19 @@ export default function AIChat({ open, onClose }: AIChatProps) {
   if (!open) return null;
 
   return (
-    <div className="fixed bottom-22 right-6 w-80 rounded-xl border border-border bg-surface-background-50 shadow-xl flex flex-col z-50 overflow-hidden">
+    <div
+      role="dialog"
+      aria-label="AI Edit chat"
+      className="fixed bottom-22 right-6 w-80 rounded-xl border border-border bg-surface-background-50 shadow-xl flex flex-col z-50 overflow-hidden"
+    >
       {/* Header */}
       <div className="flex items-center justify-between px-4 py-3 border-b border-border">
         <span className="font-semibold text-text-heading text-sm">AI Edit</span>
-        <button onClick={onClose} className="text-text-body-200 hover:text-text-body cursor-pointer">
+        <button
+          onClick={onClose}
+          aria-label="Close AI chat"
+          className="text-text-body-200 hover:text-text-body cursor-pointer"
+        >
           <X className="w-4 h-4" />
         </button>
       </div>
@@ -66,6 +74,7 @@ export default function AIChat({ open, onClose }: AIChatProps) {
         />
         <button
           onClick={handleSend}
+          aria-label="Send message"
           className="text-text-button-primary bg-surface-button-primary hover:bg-surface-button-primary-hover rounded-lg p-1.5 transition-colors cursor-pointer"
         >
           <Send className="w-4 h-4" />

@@ -34,7 +34,7 @@ export async function POST(req: Request) {
       required: ['title', 'cards'],
     };
 
-    // 2. Call the OpenAI API using function_call enforcement
+    // 2. Call the OpenAI API with tool_choice enforcement
     const aiResponse = await fetch(
       'https://api.openai.com/v1/chat/completions',
       {
@@ -53,14 +53,17 @@ export async function POST(req: Request) {
             },
           ],
           temperature: 0.4,
-          functions: [
+          tools: [
             {
-              name: 'create_deck',
-              description: 'Return a flashcard deck',
-              parameters: deckSchema,
+              type: 'function',
+              function: {
+                name: 'create_deck',
+                description: 'Return a flashcard deck',
+                parameters: deckSchema,
+              },
             },
           ],
-          function_call: { name: 'create_deck' }, // force schema enforcement
+          tool_choice: { type: 'function', function: { name: 'create_deck' } },
         }),
       }
     );
@@ -76,15 +79,15 @@ export async function POST(req: Request) {
     const aiData = await aiResponse.json();
 
     // 3. Extract structured deck object
-    const functionCall = aiData.choices[0].message.function_call;
-    if (!functionCall || !functionCall.arguments) {
+    const toolCall = aiData.choices[0].message.tool_calls?.[0];
+    if (!toolCall || !toolCall.function.arguments) {
       return NextResponse.json(
         { error: 'AI did not return deck' },
         { status: 500 }
       );
     }
 
-    const rawJSON = JSON.parse(functionCall.arguments);
+    const rawJSON = JSON.parse(toolCall.function.arguments);
 
     // 4. Add IDs and timestamp to deck and cards
     const deck = DeckSchema.parse({

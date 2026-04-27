@@ -22,7 +22,7 @@ const variantClasses = {
 
 export default function ActionButton({ icon, text, onClick, className = '', href, label, noBorder = false, rounded = 'full', variant }: ActionButtonProps) {
     const colorClasses = variant ? variantClasses[variant] : variantClasses['secondary'];
-    const baseClasses = `cursor-pointer rounded-${rounded} ${noBorder ? '' : 'border border-border hover:border-border-focus'} flex items-center justify-center transition-colors focus-visible:outline-none focus-visible:border-border-focus ${colorClasses} ${className}`;
+    const baseClasses = `cursor-pointer rounded-${rounded} ${noBorder ? '' : 'border border-border hover:border-border-focus'} flex items-center justify-center transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-border-focus focus-visible:ring-offset-2 focus-visible:border-border-focus ${colorClasses} ${className}`;
 
     const content = (
         <>

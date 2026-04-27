@@ -111,6 +111,9 @@ export default function Study() {
         </div>
         <FloatingActionBar actions={actions} />
       </header>
+      <p className="sr-only" role="status">
+        Flashcard study mode. Press Space or Enter to flip a card. Use the left and right arrow keys to navigate between cards.
+      </p>
       <main className="w-full max-w-lg md:max-w-xl mx-auto text-center mt-6">
         <div>
           {cards.length > 0 && currentIndex < cards.length ? (
@@ -137,7 +140,7 @@ export default function Study() {
           <div className="mt-6 flex items-center justify-center gap-4">
             <ActionButton
               icon={<ChevronLeft className="w-6 h-6" />}
-              onClick={handleNext}
+              onClick={handlePrevious}
               className="hidden md:flex w-8 h-8"
             />
             <p className="text-text-body-200 min-w-[60px] text-lg">

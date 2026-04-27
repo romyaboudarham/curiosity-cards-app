@@ -17,7 +17,7 @@ export default function PrimaryButton({
     <button
       type={type}
       onClick={onClick}
-      className={`uppercase bg-surface-button-primary hover:bg-surface-button-primary-hover rounded-md p-2 text-text-button-primary border border-border hover:border-border-focus cursor-pointer focus-visible:outline-none focus-visible:border-border-focus ${className ?? ''}`}
+      className={`uppercase bg-surface-button-primary hover:bg-surface-button-primary-hover rounded-md p-2 text-text-button-primary border border-border hover:border-border-focus cursor-pointer focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-border-focus focus-visible:ring-offset-2 focus-visible:border-border-focus ${className ?? ''}`}
     >
       {text}
     </button>

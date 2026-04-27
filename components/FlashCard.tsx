@@ -27,11 +27,6 @@ export default function FlashCard({
 }: FlashCardProps) {
   const [isFlipped, setIsFlipped] = useState(false);
   const [isReady, setIsReady] = useState(false);
-
-  useEffect(() => {
-    const timer = setTimeout(() => setIsReady(true), 250);
-    return () => clearTimeout(timer);
-  }, []);
   const [dragOffset, setDragOffset] = useState(0);
   const [isDragging, setIsDragging] = useState(false);
   const [isAnimating, setIsAnimating] = useState(false);
@@ -42,6 +37,11 @@ export default function FlashCard({
   const currentTouchX = useRef(0);
   const isDraggingRef = useRef(false);
   const handledByTouch = useRef(false);
+
+  useEffect(() => {
+    const timer = setTimeout(() => setIsReady(true), 250);
+    return () => clearTimeout(timer);
+  }, []);
 
   const handleFlip = () => {
     setIsFlipped((prev) => !prev);
@@ -58,22 +58,30 @@ export default function FlashCard({
 
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
+      const target = e.target as HTMLElement;
+      const isTyping =
+        target.tagName === 'INPUT' ||
+        target.tagName === 'TEXTAREA' ||
+        target.isContentEditable;
+
       if (e.key === 'ArrowRight') {
         e.preventDefault();
         onNext?.();
       } else if (e.key === 'ArrowLeft') {
         e.preventDefault();
         onPrevious?.();
+      } else if ((e.key === ' ' || e.key === 'Enter') && !isTyping) {
+        e.preventDefault();
+        handleFlip();
       }
     };
 
     window.addEventListener('keydown', handleKeyDown);
     return () => window.removeEventListener('keydown', handleKeyDown);
-  }, [onNext, onPrevious]);
+  }, [onNext, onPrevious, onFlip]);
 
   const handleTouchStart = (e: React.TouchEvent) => {
     if (isAnimating) return;
-
     touchStartX.current = e.touches[0].clientX;
     touchStartY.current = e.touches[0].clientY;
     currentTouchX.current = e.touches[0].clientX;
@@ -84,11 +92,9 @@ export default function FlashCard({
 
   const handleTouchMove = (e: React.TouchEvent) => {
     if (!isDraggingRef.current || isAnimating) return;
-
     currentTouchX.current = e.touches[0].clientX;
     const deltaX = currentTouchX.current - touchStartX.current;
     const deltaY = e.touches[0].clientY - touchStartY.current;
-
     if (Math.abs(deltaX) > Math.abs(deltaY) && Math.abs(deltaX) > 5) {
       e.preventDefault();
       setDragOffset(deltaX);
@@ -97,7 +103,6 @@ export default function FlashCard({
 
   const handleTouchEnd = (e: React.TouchEvent) => {
     if (!isDraggingRef.current || isAnimating) return;
-
     const deltaX = currentTouchX.current - touchStartX.current;
     const deltaY = e.changedTouches[0].clientY - touchStartY.current;
     const deltaTime = Date.now() - touchStartTime.current;
@@ -121,11 +126,9 @@ export default function FlashCard({
     if (absDeltaX > absDeltaY && absDeltaX > SWIPE_THRESHOLD) {
       setIsAnimating(true);
       const throwDirection = deltaX > 0 ? 1 : -1;
-
       if (absDeltaX > THROW_THRESHOLD) {
         setDragOffset(throwDirection * window.innerWidth);
       }
-
       setTimeout(() => {
         onNext?.();
         setDragOffset(0);
@@ -153,7 +156,7 @@ export default function FlashCard({
       </span>
       <button
         type="button"
-        className="cursor-pointer perspective-[1000px] aspect-square md:aspect-3/2 animate-fade-in touch-none select-none bg-transparent border-0 p-0 w-full focus-visible:outline-none focus-visible:border-border-focus rounded-xl"
+        className="cursor-pointer perspective-[1000px] aspect-square md:aspect-3/2 animate-fade-in touch-none select-none bg-transparent border-0 p-0 w-full focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-border-focus focus-visible:ring-offset-2 rounded-xl"
         onClick={handleClick}
         onTouchStart={handleTouchStart}
         onTouchMove={handleTouchMove}

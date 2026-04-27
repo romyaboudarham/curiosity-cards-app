@@ -13,7 +13,7 @@ interface RoundButtonProps {
 }
 
 export default function RoundButton({ icon, onClick, className = '', href, label, noBorder = false }: RoundButtonProps) {
-    const baseClasses = `text-text-button-secondary cursor-pointer rounded-full ${noBorder ? '' : 'border border-border hover:border-border-focus'} bg-surface-background-50 flex items-center justify-center text-text-body hover:bg-surface-background-100 transition-colors focus-visible:outline-none focus-visible:border-border-focus ${className}`;
+    const baseClasses = `text-text-button-secondary cursor-pointer rounded-full ${noBorder ? '' : 'border border-border hover:border-border-focus'} bg-surface-background-50 flex items-center justify-center text-text-body hover:bg-surface-background-100 transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-border-focus focus-visible:ring-offset-2 focus-visible:border-border-focus ${className}`;
     
     const content = (
         <>
